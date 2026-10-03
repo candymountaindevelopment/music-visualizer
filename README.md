@@ -1,5 +1,7 @@
 # Danas Bouncing Ball
 
+**<https://candymountaindevelopment.github.io/music-visualizer/>**
+
 Play a piece on a xylophone and watch a ball land on every note.
 
 Give it a **Danas Piano Tutor lesson**, a **tune script**, a **MusicXML**
@@ -24,8 +26,9 @@ python serve.py
 
 Then <http://127.0.0.1:8770>. On GitHub Pages it needs no configuration at
 all: push, set *Settings → Pages → Source* to **GitHub Actions**, and the
-workflow in `.github/workflows/pages.yml` publishes the repository as it
-stands.
+workflow in `.github/workflows/pages.yml` runs the tests and publishes the
+repository as it stands. It lives in the `music-visualizer` repository, which
+is why the published address does not carry the app's own name.
 
 ## The controls
 
