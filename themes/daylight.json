@@ -1,0 +1,41 @@
+{
+  "name": "Daylight",
+  "colours": {
+    "bg": "#f4f6f8",
+    "panel": "#ffffff",
+    "ink": "#1b2430",
+    "quiet": "#64707d",
+    "hairline": "#d8dee5",
+    "accent": "#0f9d6b",
+    "warn": "#b9770e",
+    "bad": "#c0392b",
+    "bars": [
+      "#e05260",
+      "#ef8034",
+      "#e8b61f",
+      "#73b84b",
+      "#1fa8a0",
+      "#3b82f6",
+      "#7c5cd6"
+    ],
+    "accidental": "#3c4a5a",
+    "lane": "#e8ecf1",
+    "ball": "#ffd978",
+    "ballEdge": "#e08a20",
+    "hit": "#0f9d6b",
+    "missed": "#c0392b",
+    "other": "#9aa6b2"
+  },
+  "shape": {
+    "instrument": "auto",
+    "roundness": 12,
+    "laneHeight": 0.3,
+    "ballSize": 1,
+    "barWidth": 0.86,
+    "beatsOnScreen": 7
+  },
+  "text": {
+    "noteNames": true,
+    "fontScale": 1
+  }
+}

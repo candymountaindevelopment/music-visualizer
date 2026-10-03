@@ -1,0 +1,8 @@
+title Frere Jacques
+composer Traditional
+tempo 104
+time 4/4
+right: C4 D4 E4 C4 | C4 D4 E4 C4 | E4 F4 G4:2 | E4 F4 G4:2
+right: G4:0.5 A4:0.5 G4:0.5 F4:0.5 E4 C4 | G4:0.5 A4:0.5 G4:0.5 F4:0.5 E4 C4 | C4 G3 C4:2 | C4 G3 C4:2
+left:  C3:4 | C3:4 | C3:4 | C3:4
+left:  C3:4 | C3:4 | C3:2 G3:2 | C3:4

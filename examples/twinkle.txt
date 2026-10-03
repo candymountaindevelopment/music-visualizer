@@ -1,0 +1,10 @@
+title Twinkle, Twinkle
+composer Traditional
+tempo 96
+time 4/4
+right: C4 C4 G4 G4 | A4 A4 G4:2 | F4 F4 E4 E4 | D4 D4 C4:2
+right: G4 G4 F4 F4 | E4 E4 D4:2 | G4 G4 F4 F4 | E4 E4 D4:2
+right: C4 C4 G4 G4 | A4 A4 G4:2 | F4 F4 E4 E4 | D4 D4 C4:2
+left:  C3:2 F3:2 | C3:2 G3:2 | C3:2 F3:2 | G3:2 C3:2
+left:  C3:2 F3:2 | C3:2 G3:2 | C3:2 F3:2 | G3:2 C3:2
+left:  C3:2 F3:2 | C3:2 G3:2 | C3:2 F3:2 | G3:2 C3:2

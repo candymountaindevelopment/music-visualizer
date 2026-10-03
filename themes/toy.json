@@ -1,0 +1,41 @@
+{
+  "name": "Toy box",
+  "colours": {
+    "bg": "#131a24",
+    "panel": "#1b2430",
+    "ink": "#fff7e8",
+    "quiet": "#a99f91",
+    "hairline": "#2b3645",
+    "accent": "#ffc13b",
+    "warn": "#ffc13b",
+    "bad": "#ff6b6b",
+    "bars": [
+      "#ff4d4d",
+      "#ff922b",
+      "#ffd43b",
+      "#51cf66",
+      "#22b8cf",
+      "#4dabf7",
+      "#cc5de8"
+    ],
+    "accidental": "#2f3b4c",
+    "lane": "#1b2430",
+    "ball": "#ffffff",
+    "ballEdge": "#ff922b",
+    "hit": "#51cf66",
+    "missed": "#ff6b6b",
+    "other": "#6b7684"
+  },
+  "shape": {
+    "instrument": "ladder",
+    "roundness": 20,
+    "laneHeight": 0.32,
+    "ballSize": 1.25,
+    "barWidth": 0.9,
+    "beatsOnScreen": 6
+  },
+  "text": {
+    "noteNames": true,
+    "fontScale": 1.1
+  }
+}

@@ -1,0 +1,5 @@
+title Up and down
+tempo 112
+time 4/4
+melody: C4 D4 E4 F4 | G4 A4 B4 C5 | B4 A4 G4 F4 | E4 D4 C4:2 .:2
+melody: C4:0.5 E4:0.5 G4:0.5 C5:0.5 G4:0.5 E4:0.5 C4:0.5 .:0.5 | C4:4

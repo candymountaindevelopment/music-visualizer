@@ -1,0 +1,43 @@
+{
+  "format": "raw.author",
+  "version": 1,
+  "project": {
+    "name": "A lesson, as the tutor writes one"
+  },
+  "lessons": [
+    {
+      "name": "hot_cross_buns",
+      "title": "Hot Cross Buns",
+      "composer": "Traditional",
+      "tempo": 84,
+      "time": "4/4",
+      "key": "C",
+      "level": 1,
+      "position": {
+        "right": "C4",
+        "left": "C3"
+      },
+      "right": {
+        "notes": "E4(3) D4(2) C4(1):2 | E4 D4 C4:2 | C4:1/8 C4:1/8 C4:1/8 C4:1/8 D4:1/8 D4:1/8 D4:1/8 D4:1/8 | E4 D4 C4:2"
+      },
+      "left": {
+        "notes": "C3(5):4 | G3(1):4 | C3:2 G3:2 | C3:4"
+      }
+    },
+    {
+      "name": "mary_with_chords",
+      "title": "Mary Had a Little Lamb (with chords)",
+      "composer": "Traditional",
+      "tempo": 92,
+      "time": "4/4",
+      "key": "C",
+      "level": 2,
+      "right": {
+        "notes": "E4(3) D4(2) C4(1) D4(2) | E4 E4 E4:2 | D4 D4 D4:2 | E4 G4(5) G4:2 | E4 D4 C4 D4 | E4 E4 E4 E4 | D4 D4 E4 D4 | C4:4"
+      },
+      "left": {
+        "notes": "[C3 E3 G3]:4(5,3,1) | [C3 E3 G3]:4 | [B2 D3 G3]:4(5,2,1) | [C3 E3 G3]:4 | [C3 E3 G3]:4 | [C3 E3 G3]:4 | [B2 D3 G3]:4 | [C3 E3 G3]:4"
+      }
+    }
+  ]
+}

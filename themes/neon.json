@@ -1,0 +1,41 @@
+{
+  "name": "Neon",
+  "colours": {
+    "bg": "#06070f",
+    "panel": "#0d1020",
+    "ink": "#e8f8ff",
+    "quiet": "#7d86a8",
+    "hairline": "#1c2340",
+    "accent": "#00e5ff",
+    "warn": "#ffe066",
+    "bad": "#ff4d8d",
+    "bars": [
+      "#ff2d95",
+      "#ff7849",
+      "#ffe066",
+      "#4ade80",
+      "#00e5ff",
+      "#5b8cff",
+      "#c084fc"
+    ],
+    "accidental": "#161c33",
+    "lane": "#0b0e1c",
+    "ball": "#ffffff",
+    "ballEdge": "#00e5ff",
+    "hit": "#4ade80",
+    "missed": "#ff4d8d",
+    "other": "#3b4467"
+  },
+  "shape": {
+    "instrument": "auto",
+    "roundness": 6,
+    "laneHeight": 0.34,
+    "ballSize": 1.1,
+    "barWidth": 0.8,
+    "beatsOnScreen": 8
+  },
+  "text": {
+    "noteNames": false,
+    "fontScale": 1
+  }
+}

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1016">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="description" content="Play a Danas Piano Tutor lesson, a tune script, MusicXML or a MIDI file on a xylophone, with a ball that lands on every note.">
+<title>Danas Bouncing Ball</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='11' r='7' fill='%23ffe9a8' stroke='%23f2a93b' stroke-width='2'/><rect x='3' y='23' width='26' height='6' rx='3' fill='%2346d7a1'/></svg>">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+
+  <header class="top">
+    <h1>Bouncing&nbsp;Ball</h1>
+    <div class="transport">
+      <button id="play" class="primary" title="Play or pause (space)">Play</button>
+      <button id="stop" title="Stop (S)">Stop</button>
+    </div>
+    <div class="piece">
+      <span id="piece-title">Nothing loaded</span>
+      <span id="piece-note" class="quiet"></span>
+    </div>
+    <span class="spacer"></span>
+    <div class="menu">
+      <button id="open-panel">Music</button>
+      <button id="design-panel">Design</button>
+      <button id="help-panel" title="How to write a tune">Guide</button>
+    </div>
+  </header>
+
+  <section class="controls" id="controls">
+    <label>Tempo
+      <input type="range" id="tempo" min="30" max="208" step="1" value="96">
+      <output id="tempo-out">96</output>
+      <button id="tempo-reset" class="tiny" title="Back to the written tempo">written</button>
+    </label>
+    <label>Repeat
+      <select id="repeats">
+        <option value="1" selected>once</option>
+        <option value="2">2×</option>
+        <option value="3">3×</option>
+        <option value="4">4×</option>
+        <option value="8">8×</option>
+        <option value="Infinity">keep going</option>
+      </select>
+    </label>
+    <label>Count-in
+      <select id="countin">
+        <option value="0">none</option>
+        <option value="1" selected>1 bar</option>
+        <option value="2">2 bars</option>
+      </select>
+    </label>
+    <label>Bars
+      <input type="number" id="bar-from" min="1" step="1" value="1" title="First bar of the section">
+      <span class="dash">–</span>
+      <input type="number" id="bar-to" min="1" step="1" value="1" title="Last bar of the section">
+      <button id="bars-all" class="tiny">all</button>
+    </label>
+    <label>Part
+      <select id="part"></select>
+    </label>
+    <label>Key
+      <select id="transpose"></select>
+    </label>
+    <label class="check"><input type="checkbox" id="metronome" checked> Metronome</label>
+    <label class="check"><input type="checkbox" id="sound" checked> Piece sounds</label>
+    <label>Volume
+      <input type="range" id="volume" min="0" max="1" step="0.02" value="0.8">
+    </label>
+    <button id="listen" title="Play along: the microphone marks the notes you get right">Listen</button>
+  </section>
+
+  <div class="stage"><canvas id="stage"></canvas></div>
+
+  <footer class="foot">
+    <span id="status">Open <b>Music</b> to paste a tune, load a lesson or try an example.</span>
+    <span class="spacer"></span>
+    <span id="place" class="quiet mono"></span>
+    <button id="warnings" class="tiny hidden">notes on this file</button>
+  </footer>
+</div>
+
+<!-- Music ------------------------------------------------------------- -->
+<div class="sheet" id="sheet-open" hidden>
+  <div class="card">
+    <div class="card-head">
+      <h2>Music</h2>
+      <button class="close" data-close aria-label="Close">×</button>
+    </div>
+    <p class="quiet">
+      Paste a tune script or a Piano Tutor lesson below, or open a file:
+      lessons (<code>.json</code>), scripts (<code>.txt</code>), MusicXML
+      (<code>.musicxml</code>, <code>.mxl</code>) and MIDI (<code>.mid</code>).
+      You can also drop a file anywhere on the page.
+    </p>
+    <div class="row">
+      <button id="file-open">Open a file…</button>
+      <input type="file" id="file" class="hidden" accept=".json,.txt,.tune,.musicxml,.xml,.mxl,.mid,.midi">
+      <select id="examples"><option value="">Examples…</option></select>
+      <span class="spacer"></span>
+      <button id="copy-script" title="This piece, written as a script">Copy this piece</button>
+    </div>
+    <textarea id="script" spellcheck="false" placeholder="title Twinkle, Twinkle
+tempo 96
+time 4/4
+right: C4 C4 G4 G4 | A4 A4 G4:2 | F4 F4 E4 E4 | D4 D4 C4:2
+left:  C3:2 F3:2 | C3:2 G3:2 | C3:2 F3:2 | G3:2 C3:2"></textarea>
+    <div class="row">
+      <button id="use-script" class="primary">Load this</button>
+      <button id="clear-script">Clear</button>
+      <span class="spacer"></span>
+      <span id="open-msg" class="msg"></span>
+    </div>
+  </div>
+</div>
+
+<!-- Design ------------------------------------------------------------ -->
+<div class="sheet" id="sheet-design" hidden>
+  <div class="card">
+    <div class="card-head">
+      <h2>Design</h2>
+      <button class="close" data-close aria-label="Close">×</button>
+    </div>
+    <div class="row">
+      <label>Design
+        <select id="theme-list"></select>
+      </label>
+      <label>Instrument
+        <select id="shape">
+          <option value="auto">Auto</option>
+          <option value="upright">Upright</option>
+          <option value="ladder">Ladder</option>
+        </select>
+      </label>
+      <label>Keys
+        <select id="octaves">
+          <option value="auto" selected>fit the piece</option>
+          <option value="1">1 octave</option>
+          <option value="2">2 octaves</option>
+          <option value="3">3 octaves</option>
+          <option value="4">4 octaves</option>
+        </select>
+      </label>
+    </div>
+    <div id="design-controls" class="design-grid"></div>
+    <div class="row">
+      <strong class="small">Bar colours</strong>
+      <div id="palette" class="palette"></div>
+      <button id="palette-add" class="tiny">+</button>
+      <button id="palette-remove" class="tiny">−</button>
+    </div>
+    <div class="row">
+      <button id="theme-export">Save as a file…</button>
+      <button id="theme-import-btn">Load a design…</button>
+      <input type="file" id="theme-import" class="hidden" accept=".json">
+      <button id="theme-reset">Start again</button>
+      <span class="spacer"></span>
+      <span id="design-msg" class="msg"></span>
+    </div>
+    <p class="quiet small">
+      A design is a small JSON file. Save one, edit it, keep it beside the
+      app in <code>themes/</code> and list it in <code>themes/index.json</code>,
+      and it appears in this menu next time.
+    </p>
+  </div>
+</div>
+
+<!-- Guide ------------------------------------------------------------- -->
+<div class="sheet" id="sheet-help" hidden>
+  <div class="card">
+    <div class="card-head">
+      <h2>Writing a tune</h2>
+      <button class="close" data-close aria-label="Close">×</button>
+    </div>
+    <p class="quiet">
+      The note language is Danas Piano Tutor's, so a lesson written for the
+      tutor plays here unchanged. Hand the whole guide to a chatbot and ask it
+      for a piece; paste what comes back into <b>Music</b>.
+    </p>
+    <div class="row">
+      <button id="copy-guide" class="primary">Copy the guide for a chatbot</button>
+      <span class="spacer"></span>
+      <span id="help-msg" class="msg"></span>
+    </div>
+    <pre id="guide" class="guide">Loading…</pre>
+  </div>
+</div>
+
+<div class="drop" id="drop" hidden><span>Drop the file to play it</span></div>
+
+<script type="module" src="src/app.js"></script>
+</body>
+</html>

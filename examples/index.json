@@ -1,0 +1,22 @@
+[
+  {
+    "file": "twinkle.txt",
+    "title": "Twinkle, Twinkle (script)"
+  },
+  {
+    "file": "ode-to-joy.txt",
+    "title": "Ode to Joy (script)"
+  },
+  {
+    "file": "frere-jacques.txt",
+    "title": "Frere Jacques (script)"
+  },
+  {
+    "file": "up-and-down.txt",
+    "title": "Up and down (script)"
+  },
+  {
+    "file": "piano-tutor-lesson.json",
+    "title": "Two Piano Tutor lessons (JSON)"
+  }
+]

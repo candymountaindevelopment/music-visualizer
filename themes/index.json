@@ -1,0 +1,9 @@
+{
+  "themes": [
+    "night.json",
+    "daylight.json",
+    "toy.json",
+    "neon.json",
+    "paper.json"
+  ]
+}
