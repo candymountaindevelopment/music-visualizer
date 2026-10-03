@@ -34,11 +34,11 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      # enablement turns Pages on the first time, so the repository needs no
-      # visit to its settings page before the first deploy.
+      # Pages has to be turned on once by hand, in Settings -> Pages ->
+      # Source: GitHub Actions. enablement asks the API to do it instead, but
+      # the workflow's own token is not allowed to create a site on this
+      # account, so it is left off and the first deploy waits for that click.
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .

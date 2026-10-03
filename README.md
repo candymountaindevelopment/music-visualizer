@@ -24,10 +24,13 @@ microphone on a file either.
 python serve.py
 ```
 
-Then <http://127.0.0.1:8770>. On GitHub Pages it needs no configuration at
-all: push, set *Settings → Pages → Source* to **GitHub Actions**, and the
-workflow in `.github/workflows/pages.yml` runs the tests and publishes the
-repository as it stands. It lives in the `music-visualizer` repository, which
+Then <http://127.0.0.1:8770>. On GitHub Pages there is one thing to do, once:
+set *Settings → Pages → Build and deployment → Source* to **GitHub Actions**.
+Until that is done the deploy step fails with *Get Pages site failed*, however
+many times it is pushed — and `configure-pages`'s `enablement` flag does not
+help, because the workflow's own token may not create the site. After that
+click, `.github/workflows/pages.yml` runs the tests and publishes the
+repository as it stands on every push. It lives in the `music-visualizer` repository, which
 is why the published address does not carry the app's own name.
 
 ## The controls
