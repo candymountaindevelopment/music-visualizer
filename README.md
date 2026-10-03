@@ -102,6 +102,14 @@ between repeats all work by moving `t0` and re-deriving the cursors, so there
 is one way for the transport to be wrong, and
 [test/transport.test.mjs](test/transport.test.mjs) checks it.
 
+## How it is built
+
+[docs/TECHNICAL.md](docs/TECHNICAL.md) is the document for whoever has to
+change it: the module map, the model every reader produces, what each format
+reader handles and refuses, the transport's one rule, the drawing maths
+(including why the ball needs an asymmetric ease), the design schema, and the
+limits.
+
 ## Tests
 
 ```bash
