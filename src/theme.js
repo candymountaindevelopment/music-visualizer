@@ -10,31 +10,32 @@
 const KEY = "dbb.theme";
 
 export const DEFAULT_THEME = {
-  name: "Night",
+  name: "Boomwhacker",
+  description: "The colours of the tubes in her hand",
   colours: {
-    bg: "#0b1016",
-    panel: "#10171e",
-    ink: "#eef3f6",
-    quiet: "#8b98a3",
-    hairline: "#1d262e",
-    accent: "#46d7a1",
-    warn: "#e9b44c",
-    bad: "#f08079",
-    bars: ["#e5484d", "#f76b15", "#f5c518", "#8bc34a", "#25b2a5", "#3d8ff5", "#8b5cf6"],
-    accidental: "#26313f",
-    lane: "#141b22",
-    ball: "#ffe9a8",
-    ballEdge: "#f2a93b",
-    hit: "#46d7a1",
-    missed: "#f08079",
-    other: "#55606c",
+    bg: "#ffffff",
+    panel: "#ffffff",
+    ink: "#15202b",
+    quiet: "#5c6b78",
+    hairline: "#dfe5ea",
+    accent: "#00a0c6",
+    warn: "#f07e26",
+    bad: "#e52421",
+    bars: ["#e52421", "#f07e26", "#ffd400", "#3fa535", "#00a0c6", "#7b4fa0", "#e8459b"],
+    accidental: "#2b3540",
+    lane: "#eef2f5",
+    ball: "#ffffff",
+    ballEdge: "#15202b",
+    hit: "#3fa535",
+    missed: "#e52421",
+    other: "#9aa7b2",
   },
   shape: {
-    instrument: "auto",        // auto | upright | ladder
-    roundness: 10,             // px at the corners of a bar
+    instrument: "ladder",      // auto | upright | ladder
+    roundness: 18,             // px at the corners of a bar
     laneHeight: 0.30,          // of the stage
     ballSize: 1,               // × the natural size
-    barWidth: 0.84,            // of its slot
+    barWidth: 0.88,            // of its slot
     beatsOnScreen: 7,          // how far ahead the lane shows
   },
   text: {
@@ -81,6 +82,7 @@ export function normalise(theme) {
   const out = deepCopy(DEFAULT_THEME);
   merge(out, theme || {});
   out.name = (theme && theme.name) || out.name;
+  out.description = (theme && theme.description) || (theme && theme.name ? "" : out.description);
   if (!Array.isArray(out.colours.bars) || !out.colours.bars.length) {
     out.colours.bars = [...DEFAULT_THEME.colours.bars];
   }

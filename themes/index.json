@@ -1,9 +1,10 @@
 {
   "themes": [
-    "night.json",
-    "daylight.json",
-    "toy.json",
-    "neon.json",
-    "paper.json"
+    "boomwhacker.json",
+    "big-and-plain.json",
+    "calm.json",
+    "sweet-shop.json",
+    "deep-sea.json",
+    "blackboard.json"
   ]
 }

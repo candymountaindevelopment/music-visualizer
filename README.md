@@ -69,41 +69,36 @@ Drop a file anywhere on the page, or use **Music → Open a file**.
 
 ## Designs
 
-A design is a small JSON file: colours, a few proportions, two switches.
-**Design** has colour pickers and sliders for all of it, and the result can be
-saved as a file.
+Six, chosen by picture rather than by name — tap one and the whole app
+follows, the stage and the panels together.
 
-To add one to the app for good, put it in `themes/` and name it in
-`themes/index.json`:
+| | |
+|---|---|
+| **Boomwhacker** | the colours of the tubes in her hand |
+| **Big and plain** | for a projector, or for eyes that need it |
+| **Calm** | nothing shouts. For a child who has had enough |
+| **Sweet shop** | fat, round and far apart — easy to aim at |
+| **Deep sea** | dark room, bright reef. Good at bedtime |
+| **Blackboard** | chalk on slate. The one that looks like school |
+
+A design is a small JSON file: colours, a few proportions, two switches.
+**Change the colours** opens pickers and sliders for all of it, and the result
+saves as a file.
+
+To add one for good, put it in `themes/` and name it in `themes/index.json`:
 
 ```json
-{ "themes": ["night.json", "daylight.json", "toy.json", "neon.json", "paper.json"] }
+{ "themes": ["boomwhacker.json", "big-and-plain.json", "calm.json",
+             "sweet-shop.json", "deep-sea.json", "blackboard.json"] }
 ```
 
-It appears in the menu next time the page loads. The five that ship are a
-starting point, not a limit — the shape of the file is in
-[themes/night.json](themes/night.json), and anything missing from a design
-falls back to the defaults, so a file with nothing but a name and two colours
-is a valid design.
+It appears in the picker next time the page loads, **with a picture of
+itself** — the previews are drawn with the same code as the stage, so a new
+design needs no artwork. Anything missing from a design file falls back to the
+defaults, so a file with nothing but a name and two colours is a valid design.
 
 Whatever you change by hand is remembered in the browser until you press
 *Start again*.
-
-## How it keeps time
-
-The beat comes from the audio clock, never from a frame counter:
-
-    runBeat = (now - t0) / secondsPerBeat - countInBeats
-
-Notes are handed to the audio scheduler a quarter of a second early and the
-bar is rung when that moment actually arrives. The lane places a note at
-`nowX + (noteBeat - runBeat) × pixelsPerBeat`, and the ball's arc runs between
-the positions of the note it left and the note it is going to — the same
-numbers the sound was scheduled with, so the landing cannot drift away from
-what is heard. Changing the speed, pausing, looping a section and jumping
-between repeats all work by moving `t0` and re-deriving the cursors, so there
-is one way for the transport to be wrong, and
-[test/transport.test.mjs](test/transport.test.mjs) checks it.
 
 ## How it is built
 

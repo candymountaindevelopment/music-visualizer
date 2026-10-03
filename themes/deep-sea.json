@@ -1,0 +1,42 @@
+{
+  "name": "Deep sea",
+  "description": "Dark room, bright reef. Good at bedtime",
+  "colours": {
+    "bg": "#06222e",
+    "panel": "#0b2f3e",
+    "ink": "#eaf9fb",
+    "quiet": "#7fa3ae",
+    "hairline": "#11404f",
+    "accent": "#35d0c8",
+    "warn": "#ffd86b",
+    "bad": "#ff7a6b",
+    "bars": [
+      "#ff7a6b",
+      "#ff9f5a",
+      "#ffd86b",
+      "#5fd38a",
+      "#35d0c8",
+      "#4fa8e8",
+      "#b98bff"
+    ],
+    "accidental": "#0f3a4a",
+    "lane": "#0b2f3e",
+    "ball": "#eaf9fb",
+    "ballEdge": "#35d0c8",
+    "hit": "#5fd38a",
+    "missed": "#ff7a6b",
+    "other": "#2d5a6b"
+  },
+  "shape": {
+    "instrument": "ladder",
+    "roundness": 14,
+    "laneHeight": 0.3,
+    "ballSize": 1.1,
+    "barWidth": 0.86,
+    "beatsOnScreen": 7
+  },
+  "text": {
+    "noteNames": true,
+    "fontScale": 1
+  }
+}

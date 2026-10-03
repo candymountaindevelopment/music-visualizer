@@ -12,6 +12,7 @@ import { toScript } from "./parse/script.js";
 import * as Theme from "./theme.js";
 import * as Instrument from "./instrument.js";
 import * as Lane from "./lane.js";
+import { drawPreview } from "./preview.js";
 
 const $ = (id) => document.getElementById(id);
 const SETTINGS_KEY = "dbb.settings";
@@ -55,7 +56,9 @@ async function boot() {
   buildDesignPanel();
 
   state.library = await Theme.loadLibrary();
-  fillThemeList();
+  if (!saved && state.library.length) state.theme = Theme.normalise(state.library[0]);
+  Theme.applyToPage(state.theme);
+  buildCards();
 
   restoreSettings();
   wire();
@@ -110,6 +113,7 @@ function applyScore(score, { quiet = false } = {}) {
   chooseInstrument();
   showWarnings(score);
   if (!quiet) say(`Loaded ${score.title}. Press Play.`);
+  sayChosen();
   fit();
 }
 
@@ -220,7 +224,10 @@ function strikeBar(midi, lead = true) {
   if (!bar) return;
   bar.hit = 1;
   const colour = bar.row === "front" ? bar.colour : Theme.mix(state.theme.colours.ink, bar.colour, 0.4);
-  state.ripples.push({ x: bar.x + bar.w / 2, y: bar.y + bar.h / 2, r: bar.w * 0.4, life: 1, colour });
+  // From the bar's short side: a ladder bar is as long as the screen, and a
+  // ripple started from its length swallows the whole instrument.
+  const spread = Math.min(bar.w, bar.h) * 0.6;
+  state.ripples.push({ x: bar.x + bar.w / 2, y: bar.y + bar.h / 2, r: spread, life: 1, colour });
   if (lead) {
     state.labels.push({
       x: bar.x + bar.w / 2, y: bar.y - 10,
@@ -564,13 +571,6 @@ function buildDesignPanel() {
     state.octavesChoice = $("octaves").value;
     chooseInstrument(); fit(); saveSettings();
   };
-  $("theme-list").onchange = () => {
-    const chosen = state.library[Number($("theme-list").value)];
-    if (!chosen) return;
-    state.theme = Theme.normalise(chosen);
-    afterThemeChange();
-    message("design-msg", `${state.theme.name}.`, "good");
-  };
   $("theme-export").onclick = () => {
     const blob = new Blob([JSON.stringify(state.theme, null, 2)], { type: "application/json" });
     const a = document.createElement("a");
@@ -595,10 +595,63 @@ function buildDesignPanel() {
   };
   $("theme-reset").onclick = () => {
     Theme.forget();
-    state.theme = Theme.normalise(Theme.DEFAULT_THEME);
+    state.theme = Theme.normalise(state.library[0] || Theme.DEFAULT_THEME);
     afterThemeChange();
     message("design-msg", "Back to the first design.", "good");
   };
+  $("colours-toggle").onclick = () => {
+    const panel = $("colours");
+    panel.hidden = !panel.hidden;
+    $("colours-toggle").setAttribute("aria-expanded", String(!panel.hidden));
+    $("colours-toggle").classList.toggle("on", !panel.hidden);
+  };
+}
+
+/* The pictures. Each one is the real drawing code on a made-up phrase, so a
+ * design dropped into themes/ gets an honest picture of itself. */
+function buildCards() {
+  const host = $("design-cards");
+  host.innerHTML = "";
+  const designs = state.library.length ? state.library : [Theme.DEFAULT_THEME];
+  for (const design of designs) {
+    const theme = Theme.normalise(design);
+    const card = document.createElement("button");
+    card.className = "card-pick";
+    card.setAttribute("aria-pressed", String(theme.name === state.theme.name));
+    card.innerHTML = `
+      <canvas></canvas>
+      <span class="caption">
+        <div>
+          <span class="name"></span>
+          <span class="what"></span>
+        </div>
+        <span class="tick">✓</span>
+      </span>`;
+    card.querySelector(".name").textContent = theme.name;
+    card.querySelector(".what").textContent = theme.description || "";
+    card.onclick = () => {
+      state.theme = Theme.normalise(design);
+      afterThemeChange();
+      message("design-msg", "", "");
+    };
+    host.append(card);
+    // The canvas has no size until it is in the document.
+    requestAnimationFrame(() => drawPreview(card.querySelector("canvas"), theme, previewRange()));
+  }
+  sayChosen();
+}
+
+/** The pictures show the piece that is loaded, where there is one. */
+function previewRange() {
+  if (!state.score) return { low: 60, octaves: 1 };
+  const [lo, hi] = state.score.range(transport.parts);
+  const fitted = Instrument.chooseRange([lo, hi]);
+  return { low: fitted.low, octaves: Math.min(2, fitted.octaves) };
+}
+
+function sayChosen() {
+  const piece = state.score ? state.score.title : "The next piece";
+  $("design-chosen").textContent = `${piece} will use ${state.theme.name}`;
 }
 
 function buildPalette() {
@@ -633,25 +686,9 @@ function changeTheme(path, value) {
 function afterThemeChange({ rebuild = true } = {}) {
   Theme.applyToPage(state.theme);
   Theme.save(state.theme);
-  if (rebuild) {
-    buildDesignPanel();
-    fillThemeList();
-  }
+  if (rebuild) buildDesignPanel();
+  buildCards();
   fit();
-}
-
-function fillThemeList() {
-  const select = $("theme-list");
-  select.innerHTML = "";
-  if (!state.library.length) {
-    select.append(new Option("this one", "-1"));
-    select.disabled = true;
-    return;
-  }
-  select.disabled = false;
-  state.library.forEach((theme, i) => select.append(new Option(theme.name, String(i))));
-  const match = state.library.findIndex((t) => t.name === state.theme.name);
-  select.value = String(match < 0 ? 0 : match);
 }
 
 function toHex(colour) {

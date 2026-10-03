@@ -1,0 +1,42 @@
+{
+  "name": "Boomwhacker",
+  "description": "The colours of the tubes in her hand",
+  "colours": {
+    "bg": "#ffffff",
+    "panel": "#ffffff",
+    "ink": "#15202b",
+    "quiet": "#5c6b78",
+    "hairline": "#dfe5ea",
+    "accent": "#00a0c6",
+    "warn": "#f07e26",
+    "bad": "#e52421",
+    "bars": [
+      "#e52421",
+      "#f07e26",
+      "#ffd400",
+      "#3fa535",
+      "#00a0c6",
+      "#7b4fa0",
+      "#e8459b"
+    ],
+    "accidental": "#2b3540",
+    "lane": "#eef2f5",
+    "ball": "#ffffff",
+    "ballEdge": "#15202b",
+    "hit": "#3fa535",
+    "missed": "#e52421",
+    "other": "#9aa7b2"
+  },
+  "shape": {
+    "instrument": "ladder",
+    "roundness": 18,
+    "laneHeight": 0.3,
+    "ballSize": 1,
+    "barWidth": 0.88,
+    "beatsOnScreen": 7
+  },
+  "text": {
+    "noteNames": true,
+    "fontScale": 1
+  }
+}

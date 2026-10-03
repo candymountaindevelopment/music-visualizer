@@ -1,0 +1,42 @@
+{
+  "name": "Big and plain",
+  "description": "For a projector, or for eyes that need it",
+  "colours": {
+    "bg": "#ffffff",
+    "panel": "#ffffff",
+    "ink": "#000000",
+    "quiet": "#3a3a3a",
+    "hairline": "#9a9a9a",
+    "accent": "#1a3fa0",
+    "warn": "#a35600",
+    "bad": "#c62828",
+    "bars": [
+      "#c62828",
+      "#a35600",
+      "#6e6200",
+      "#2e6b2e",
+      "#00606b",
+      "#1a3fa0",
+      "#5b2d8e"
+    ],
+    "accidental": "#3a3a3a",
+    "lane": "#ffffff",
+    "ball": "#000000",
+    "ballEdge": "#000000",
+    "hit": "#2e6b2e",
+    "missed": "#c62828",
+    "other": "#6a6a6a"
+  },
+  "shape": {
+    "instrument": "upright",
+    "roundness": 2,
+    "laneHeight": 0.32,
+    "ballSize": 1.25,
+    "barWidth": 0.94,
+    "beatsOnScreen": 5
+  },
+  "text": {
+    "noteNames": true,
+    "fontScale": 1.45
+  }
+}

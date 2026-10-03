@@ -125,47 +125,57 @@ left:  C3:2 F3:2 | C3:2 G3:2 | C3:2 F3:2 | G3:2 C3:2"></textarea>
       <h2>Design</h2>
       <button class="close" data-close aria-label="Close">×</button>
     </div>
+    <p class="quiet">Tap a picture. The names are for grown-ups — the picture is the choice.</p>
+
+    <div id="design-cards" class="cards"></div>
+
     <div class="row">
-      <label>Design
-        <select id="theme-list"></select>
-      </label>
-      <label>Instrument
-        <select id="shape">
-          <option value="auto">Auto</option>
-          <option value="upright">Upright</option>
-          <option value="ladder">Ladder</option>
-        </select>
-      </label>
-      <label>Keys
-        <select id="octaves">
-          <option value="auto" selected>fit the piece</option>
-          <option value="1">1 octave</option>
-          <option value="2">2 octaves</option>
-          <option value="3">3 octaves</option>
-          <option value="4">4 octaves</option>
-        </select>
-      </label>
-    </div>
-    <div id="design-controls" class="design-grid"></div>
-    <div class="row">
-      <strong class="small">Bar colours</strong>
-      <div id="palette" class="palette"></div>
-      <button id="palette-add" class="tiny">+</button>
-      <button id="palette-remove" class="tiny">−</button>
-    </div>
-    <div class="row">
+      <button id="colours-toggle" aria-expanded="false">Change the colours</button>
       <button id="theme-export">Save as a file…</button>
       <button id="theme-import-btn">Load a design…</button>
       <input type="file" id="theme-import" class="hidden" accept=".json">
-      <button id="theme-reset">Start again</button>
+      <button id="theme-reset" class="plain">Start again</button>
+    </div>
+
+    <div id="colours" hidden>
+      <div class="row">
+        <label>Instrument
+          <select id="shape">
+            <option value="auto">Auto</option>
+            <option value="upright">Upright</option>
+            <option value="ladder">Ladder</option>
+          </select>
+        </label>
+        <label>Keys
+          <select id="octaves">
+            <option value="auto" selected>fit the piece</option>
+            <option value="1">1 octave</option>
+            <option value="2">2 octaves</option>
+            <option value="3">3 octaves</option>
+            <option value="4">4 octaves</option>
+          </select>
+        </label>
+      </div>
+      <div id="design-controls" class="design-grid"></div>
+      <div class="row">
+        <strong class="small">Bar colours</strong>
+        <div id="palette" class="palette"></div>
+        <button id="palette-add" class="tiny">+</button>
+        <button id="palette-remove" class="tiny">−</button>
+      </div>
+      <p class="quiet small">
+        A design is a small JSON file. Save one, edit it, keep it beside the
+        app in <code>themes/</code> and list it in <code>themes/index.json</code>,
+        and it appears here next time.
+      </p>
+    </div>
+
+    <div class="card-foot">
+      <span id="design-chosen" class="quiet"></span>
       <span class="spacer"></span>
       <span id="design-msg" class="msg"></span>
+      <button data-close class="primary">Done</button>
     </div>
-    <p class="quiet small">
-      A design is a small JSON file. Save one, edit it, keep it beside the
-      app in <code>themes/</code> and list it in <code>themes/index.json</code>,
-      and it appears in this menu next time.
-    </p>
   </div>
 </div>
 

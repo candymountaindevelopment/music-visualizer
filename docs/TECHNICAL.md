@@ -43,8 +43,9 @@ browser will open on a file.
 | `src/instrument.js` | 199 | where the bars are, and drawing them |
 | `src/lane.js` | 172 | the lane of tiles, and the ball |
 | `src/listen.js` | 120 | YIN on the microphone |
-| `src/theme.js` | 195 | designs: schema, merging, CSS variables, library |
-| `src/app.js` | 760 | panels, settings, the frame loop, everything wired |
+| `src/theme.js` | 196 | designs: schema, merging, CSS variables, library |
+| `src/preview.js` | 90 | a small true picture of a design, for the picker |
+| `src/app.js` | 797 | panels, settings, the frame loop, everything wired |
 
 The split that matters: **`transport.js` decides *when*, `instrument.js` and
 `lane.js` decide *where*, and `app.js` is the only file that touches the
@@ -356,11 +357,12 @@ A design is a JSON file of colours, proportions and two switches:
 
 ```json
 {
-  "name": "Night",
-  "colours": { "bg": "#0b1016", "accent": "#46d7a1",
-               "bars": ["#e5484d", "…seven or more…"], "ball": "#ffe9a8" },
-  "shape": { "instrument": "auto", "roundness": 10, "laneHeight": 0.3,
-             "ballSize": 1, "barWidth": 0.84, "beatsOnScreen": 7 },
+  "name": "Boomwhacker",
+  "description": "The colours of the tubes in her hand",
+  "colours": { "bg": "#ffffff", "accent": "#00a0c6",
+               "bars": ["#e52421", "…seven or more…"], "ball": "#ffffff" },
+  "shape": { "instrument": "ladder", "roundness": 18, "laneHeight": 0.3,
+             "ballSize": 1, "barWidth": 0.88, "beatsOnScreen": 7 },
   "text": { "noteNames": true, "fontScale": 1 }
 }
 ```
@@ -375,12 +377,20 @@ reads the object directly. `barColour()` maps a pitch to the palette by scale
 step, so a palette of any length works and a tune in C starts on the first
 colour.
 
+The six that ship come from a design board that stated the rule for the
+picker: *tap a picture, the names are for grown-ups*. So `src/preview.js`
+draws each design on a small canvas **with the same `Instrument.layout` and
+`Instrument.draw` the stage uses**, over a made-up six-note phrase, and the
+panel is a grid of those pictures with the name and one line underneath. A
+design dropped into `themes/` therefore arrives with an honest picture of
+itself and no artwork to maintain. The colour and slider editor is folded
+behind *Change the colours*, because it is for the one person in a hundred
+who wants it.
+
 The library is `themes/*.json` listed in `themes/index.json`, fetched at
 startup. **Adding a design is adding a file** — no code changes. Whatever the
 panel edits is saved under `dbb.theme`; *Save as a file* writes the same shape
 back out, and *Load a design* reads one.
-
----
 
 ## 9. What is remembered
 

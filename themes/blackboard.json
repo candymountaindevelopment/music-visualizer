@@ -1,0 +1,42 @@
+{
+  "name": "Blackboard",
+  "description": "Chalk on slate. The one that looks like school",
+  "colours": {
+    "bg": "#1e2b26",
+    "panel": "#243329",
+    "ink": "#f2efe4",
+    "quiet": "#a8b3a4",
+    "hairline": "#3a4c42",
+    "accent": "#e8d694",
+    "warn": "#e8b07a",
+    "bad": "#e8928c",
+    "bars": [
+      "#e8928c",
+      "#e8b07a",
+      "#e8d694",
+      "#a8cc95",
+      "#8fc9c2",
+      "#92b4d8",
+      "#bfa6d8"
+    ],
+    "accidental": "#3a4c42",
+    "lane": "#243329",
+    "ball": "#f2efe4",
+    "ballEdge": "#cfc9b4",
+    "hit": "#a8cc95",
+    "missed": "#e8928c",
+    "other": "#56655a"
+  },
+  "shape": {
+    "instrument": "upright",
+    "roundness": 6,
+    "laneHeight": 0.3,
+    "ballSize": 1,
+    "barWidth": 0.84,
+    "beatsOnScreen": 7
+  },
+  "text": {
+    "noteNames": true,
+    "fontScale": 1.05
+  }
+}

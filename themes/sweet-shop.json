@@ -1,0 +1,42 @@
+{
+  "name": "Sweet shop",
+  "description": "Fat, round and far apart \u2014 easy to aim at",
+  "colours": {
+    "bg": "#fff3f6",
+    "panel": "#ffe7ee",
+    "ink": "#4a2b38",
+    "quiet": "#9c7585",
+    "hairline": "#f6d5e0",
+    "accent": "#ff6b81",
+    "warn": "#ffa14a",
+    "bad": "#ff6b81",
+    "bars": [
+      "#ff6b81",
+      "#ffa14a",
+      "#ffd95e",
+      "#8fd98a",
+      "#65cfd6",
+      "#7aa7f5",
+      "#c79bf0"
+    ],
+    "accidental": "#e8c3d2",
+    "lane": "#ffe7ee",
+    "ball": "#ffffff",
+    "ballEdge": "#ff6b81",
+    "hit": "#8fd98a",
+    "missed": "#ff6b81",
+    "other": "#e3c7d2"
+  },
+  "shape": {
+    "instrument": "upright",
+    "roundness": 26,
+    "laneHeight": 0.3,
+    "ballSize": 1.3,
+    "barWidth": 0.72,
+    "beatsOnScreen": 6
+  },
+  "text": {
+    "noteNames": true,
+    "fontScale": 1.1
+  }
+}

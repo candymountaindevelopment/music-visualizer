@@ -192,6 +192,67 @@ textarea {
   color: var(--ink-dim);
 }
 
+/* The design picker: pictures, with the name underneath for the grown-up. */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 12px;
+}
+.card-pick {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+  text-align: left;
+  border-radius: calc(var(--round) + 4px);
+  border: 2px solid var(--hairline);
+  background: var(--panel);
+}
+.card-pick:hover { border-color: var(--accent); }
+.card-pick[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.card-pick canvas { display: block; width: 100%; height: 132px; }
+.card-pick .caption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 11px 11px;
+  border-top: 1px solid var(--hairline);
+}
+.card-pick .caption div { min-width: 0; }
+.card-pick .name { font-weight: 650; display: block; }
+.card-pick .what {
+  display: block;
+  color: var(--quiet);
+  font-size: 0.84em;
+  line-height: 1.35;
+  white-space: normal;
+}
+.card-pick .tick {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--panel);
+  font-size: 13px;
+  line-height: 22px;
+  text-align: center;
+  visibility: hidden;
+}
+.card-pick[aria-pressed="true"] .tick { visibility: visible; }
+
+.card-foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--hairline);
+}
+button.plain { background: none; border-color: transparent; color: var(--quiet); }
+button.plain:hover { color: var(--ink); border-color: var(--hairline); }
+#colours { display: flex; flex-direction: column; gap: 10px; }
+#colours[hidden] { display: none; }
+
 .design-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));

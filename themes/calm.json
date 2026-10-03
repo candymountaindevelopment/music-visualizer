@@ -1,0 +1,42 @@
+{
+  "name": "Calm",
+  "description": "Nothing shouts. For a child who has had enough",
+  "colours": {
+    "bg": "#fbf8f3",
+    "panel": "#f3efe8",
+    "ink": "#43403a",
+    "quiet": "#8a8278",
+    "hairline": "#e0d9cd",
+    "accent": "#93a986",
+    "warn": "#c2a179",
+    "bad": "#b98a86",
+    "bars": [
+      "#b98a86",
+      "#c2a179",
+      "#bdb07e",
+      "#93a986",
+      "#86a49e",
+      "#8798ae",
+      "#a596ae"
+    ],
+    "accidental": "#8d8579",
+    "lane": "#ece8e1",
+    "ball": "#f6f1e8",
+    "ballEdge": "#b0a695",
+    "hit": "#93a986",
+    "missed": "#b98a86",
+    "other": "#c3bcb0"
+  },
+  "shape": {
+    "instrument": "ladder",
+    "roundness": 16,
+    "laneHeight": 0.3,
+    "ballSize": 0.95,
+    "barWidth": 0.86,
+    "beatsOnScreen": 8
+  },
+  "text": {
+    "noteNames": false,
+    "fontScale": 1
+  }
+}
