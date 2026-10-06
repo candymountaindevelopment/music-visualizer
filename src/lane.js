@@ -27,12 +27,16 @@ export function draw(g, w, h, { theme, transport, position, marks, flats = false
   const to = position + (w - nowX) / ppb;
   const notes = transport.visible(from, to);
 
-  const [lo, hi] = pitchWindow(transport, notes);
+  const [lo, hi] = pitchWindow(transport);
   const span = Math.max(1, hi - lo);
   const tileH = Math.max(10, Math.min(22, band * 0.15));
-  const zoneTop = top + band * 0.5, zoneBot = h - Math.max(8, band * 0.12) - tileH;
+  const zoneTop = top + band * 0.34, zoneBot = h - Math.max(8, band * 0.12) - tileH;
   const xFor = (beat) => nowX + (beat - position) * ppb;
-  const yFor = (midi) => zoneBot - ((midi - lo) / span) * (zoneBot - zoneTop);
+  // A row belongs to a pitch for the whole section, so the rows never move
+  // under the ball. A note from another part that falls outside the leading
+  // part's range is held at the edge rather than stretching everything.
+  const yFor = (midi) =>
+    Math.max(zoneTop, Math.min(zoneBot, zoneBot - ((midi - lo) / span) * (zoneBot - zoneTop)));
 
   g.fillStyle = theme.colours.lane;
   g.fillRect(0, top, w, band);
@@ -52,13 +56,20 @@ export function draw(g, w, h, { theme, transport, position, marks, flats = false
     const played = marks.has(markKey(pass, event));
     const past = runBeat + event.beats < position;
 
+    const sounding = isLead && runBeat <= position && position < runBeat + event.beats;
     for (const midi of event.midis) {
       const y = yFor(midi);
       const height = isLead ? tileH : tileH * 0.68;
-      g.globalAlpha = past ? 0.3 : isLead ? 1 : 0.65;
+      g.globalAlpha = past && !sounding ? 0.3 : isLead ? 1 : 0.65;
       g.fillStyle = played ? theme.colours.hit : isLead ? barColour(theme, midi) : theme.colours.other;
       roundRect(g, x, y + (isLead ? 0 : (tileH - height) / 2), tw, height, Math.min(6, height / 2));
       g.fill();
+      if (sounding) {                       // the one the ball is standing on
+        g.strokeStyle = theme.colours.ink;
+        g.lineWidth = 2;
+        roundRect(g, x - 1.5, y - 1.5, tw + 3, height + 3, Math.min(7, height / 2 + 2));
+        g.stroke();
+      }
       if (isLead && theme.text.noteNames && tw > 24 && event.midis.length < 4) {
         g.fillStyle = alpha("#000000", 0.62);
         g.textAlign = "center";
@@ -75,7 +86,7 @@ export function draw(g, w, h, { theme, transport, position, marks, flats = false
   g.lineWidth = 2;
   g.beginPath(); g.moveTo(nowX, top + 5); g.lineTo(nowX, h - 3); g.stroke();
 
-  const ball = ballAt(transport, position, { xFor, yFor, band, zoneBot, theme });
+  const ball = ballAt(transport, position, { nowX, yFor, band, zoneBot, theme });
   if (ball) drawBall(g, ball, theme);
   return { geo, ball };
 }
@@ -94,11 +105,14 @@ function drawBarLines(g, geo, transport, position, from, to, theme) {
   }
 }
 
-/* The ball travels between the two notes of the leading part on either side
- * of now. During the count-in it comes in from the left at the pitch of the
- * first note; at the end of a pass it is already on its way to the first note
- * of the next one, which is the same point the clock comes round to. */
-function ballAt(transport, position, { xFor, yFor, band, zoneBot, theme }) {
+/* The ball stays on the now line and moves only up and down: the note under
+ * it is the note being played, with nothing to read into its sideways drift.
+ * It leaves the row of the note it is on and arrives at the row of the next
+ * one exactly when that note sounds. During the count-in it drops in at the
+ * pitch of the first note; at the end of a pass it is already on its way to
+ * the first note of the next one, which is the same point the clock comes
+ * round to. */
+function ballAt(transport, position, { nowX, yFor, band, zoneBot, theme }) {
   const lead = leadNeighbours(transport, position);
   if (!lead) return null;
   const { from, to } = lead;
@@ -106,15 +120,12 @@ function ballAt(transport, position, { xFor, yFor, band, zoneBot, theme }) {
   const t = Math.max(0, Math.min(1, (position - from.runBeat) / gap));
   const r = Math.max(6, Math.min(15, band * 0.11)) * theme.shape.ballSize;
 
-  const x0 = xFor(from.runBeat), x1 = xFor(to.runBeat);
   const y0 = yFor(from.midi) - r, y1 = yFor(to.midi) - r;
-  const arc = Math.min(band * 0.95, 22 + gap * 26);
-  // Leaving fast and arriving slowly: an even interpolation would hold the
-  // ball still, since both ends scroll at the same rate. The ease still ends
-  // at exactly 1, so the landing is the note's own moment.
-  const e = 1 - Math.pow(1 - t, 4);
+  // High enough to be seen leaving, never so high it leaves the lane; a long
+  // gap earns a bigger hop, which is the only hint of how long the wait is.
+  const arc = Math.min(band * 0.32, 14 + gap * 16);
   return {
-    x: x0 + (x1 - x0) * e,
+    x: nowX,
     y: y0 + (y1 - y0) * t - Math.sin(Math.PI * t) * arc,
     r, t, shadowY: zoneBot + 3,
     squash: 1 - 0.3 * Math.max(0, 1 - Math.min(t, 1 - t) * 9),
@@ -159,12 +170,20 @@ function drawBall(g, ball, theme) {
   g.beginPath(); g.ellipse(x, y, r, r * squash, 0, 0, Math.PI * 2); g.stroke();
 }
 
-function pitchWindow(transport, visible) {
-  let lo = 127, hi = 0;
-  for (const { event } of visible) for (const m of event.midis) { lo = Math.min(lo, m); hi = Math.max(hi, m); }
-  if (lo > hi) {                                   // nothing on screen: use the piece
-    const range = transport.score ? transport.score.range(transport.parts) : [60, 72];
-    return range;
+/* The rows come from the section, not from what happens to be on screen.
+ * Taking them from the visible notes meant the whole mapping shifted every
+ * time a note scrolled in or out, and a ball that lands correctly on a row
+ * that has just moved looks exactly like a ball landing on the wrong note.
+ * The leading part sets the scale, because it is the one being followed. */
+function pitchWindow(transport) {
+  const lead = transport.events.filter((e) => e.part === transport.lead);
+  const notes = (lead.length ? lead : transport.events).flatMap((e) => e.midis);
+  if (!notes.length) return [60, 72];
+  let lo = Math.min(...notes), hi = Math.max(...notes);
+  if (hi - lo < 7) {                               // a narrow tune still uses the band
+    const middle = (lo + hi) / 2;
+    lo = middle - 3.5;
+    hi = middle + 3.5;
   }
   return [lo, hi];
 }

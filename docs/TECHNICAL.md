@@ -303,27 +303,26 @@ A note is drawn at `nowX + (runBeat − position) × pixelsPerBeat`, with
 window of what is on screen. The leading part is full strength; the others are
 drawn thinner in one colour, to be seen and not followed.
 
-The ball's arc runs between the position of the note it left and the note it
-is going to — **the same numbers the sound was scheduled with**, which is why
-the landing cannot drift away from what is heard.
+The ball stays **on the now line and moves only up and down**. Its height is
+the row of the note it left, rising and falling to the row of the note it is
+going to, arriving exactly when that note sounds — the same beat the sound
+was scheduled with, so the landing cannot drift from what is heard. Nothing
+moves sideways, so there is nothing to misread: the tile under the ball is
+the note, and that tile is ringed in the ink colour while it sounds.
 
-The one piece of real arithmetic here: both ends of the arc scroll leftwards
-at the same rate, so a straight interpolation cancels exactly and the ball
-hangs motionless over the now line. (With `x(t) = x₀ + (x₁ − x₀)·t` and
-`x₀ = nowX − t·gap·ppb`, `x₁ = nowX + (1−t)·gap·ppb`, every `t` gives `nowX`.)
-The fix is an asymmetric ease:
+An earlier version let the ball leap forward onto the note coming in, with an
+asymmetric ease (`1 - (1 - t)⁴`) to defeat the fact that both ends of the arc
+scroll leftwards at the same rate and a straight interpolation cancels
+exactly. It was prettier and harder to read, and it is gone.
 
-```js
-const e = 1 - Math.pow(1 - t, 4);
-x = x0 + (x1 - x0) * e;
-y = y0 + (y1 - y0) * t - Math.sin(Math.PI * t) * arc;
-```
-
-Leaving fast and arriving slowly makes the ball leap forward onto the note
-coming in and ride it down. `e(1) = 1` exactly, so the landing is still the
-note's own moment — measured at nought pixels from the now line.
-
----
+The rows themselves come from `pitchWindow()`, and **they are taken from the
+section rather than from what is on screen**. Taking them from the visible
+notes — which is what the first version did — meant the mapping shifted every
+time a note scrolled in or out: the ball landed correctly on a row that had
+just moved, which looks exactly like a ball landing on the wrong note. The
+leading part sets the scale, since it is the one being followed, and a note
+from another part outside that range is held at the edge of the band rather
+than stretching everything to fit it.
 
 ## 7. Listening
 
