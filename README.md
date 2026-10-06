@@ -5,9 +5,9 @@
 Play a piece on a xylophone and watch a ball land on every note.
 
 Give it a **Danas Piano Tutor lesson**, a **tune script**, a **MusicXML**
-export or a **MIDI file**. The notes run along a lane under the instrument,
-the ball leaps from one to the next and lands on each at the moment it
-sounds, and the bar rings. Set the speed, how many times it repeats, which
+export or a **MIDI file**. The notes run along a lane under the instrument
+and the ball bounces on the spot above them, dropping onto each note at the
+moment it sounds while the bar rings. Set the speed, how many times it repeats, which
 bars to work on and which hand to follow — then play along, and the notes you
 get right turn green.
 
@@ -100,13 +100,31 @@ defaults, so a file with nothing but a name and two colours is a valid design.
 Whatever you change by hand is remembered in the browser until you press
 *Start again*.
 
+## How it keeps time
+
+The beat comes from the audio clock, never from a frame counter:
+
+    runBeat = (now - t0) / secondsPerBeat - countInBeats
+
+Notes are handed to the audio scheduler a quarter of a second early and the
+bar is rung when that moment actually arrives. The lane places a note at
+`nowX + (noteBeat - runBeat) × pixelsPerBeat`, and the ball stays on that now
+line, moving only up and down: it leaves the row of the note it is on and
+reaches the row of the next one exactly as that note sounds — the same
+numbers the sound was scheduled with, so the landing cannot drift away from
+what is heard. The rows come from the section rather than from what is on
+screen, so they never move underneath it. Changing the speed, pausing,
+looping a section and jumping between repeats all work by moving `t0` and
+re-deriving the cursors, so there is one way for the transport to be wrong,
+and [test/transport.test.mjs](test/transport.test.mjs) checks it.
+
 ## How it is built
 
 [docs/TECHNICAL.md](docs/TECHNICAL.md) is the document for whoever has to
 change it: the module map, the model every reader produces, what each format
 reader handles and refuses, the transport's one rule, the drawing maths
-(including why the ball needs an asymmetric ease), the design schema, and the
-limits.
+(including why the lane's pitch rows have to come from the section and not
+from what is on screen), the design schema, and the limits.
 
 ## Tests
 
